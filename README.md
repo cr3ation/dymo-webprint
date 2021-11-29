@@ -54,8 +54,13 @@ docker build -t dymo-webprint:latest .
 
 #### Run container
 ```shell
+sudo docker run -d --privileged -v /dev/bus/usb:/dev/bus/usb -p 5000:5000 dymo-webprint:latest
+```
+
+```shell
 docker run -d --device=/dev/bus/usb/$(lsusb -d 0922:1002 | awk '{print $2 "/" $4}' | sed 's/://g') -p 5000:5000 dymo-webprint:latest
 ```
+
 
 ### Environment Variables
 * `SLACK_TOKEN` - Mandatory
