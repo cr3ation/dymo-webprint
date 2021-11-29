@@ -32,10 +32,10 @@ class Print(Resource):
         qr = json_data["qr"] if "qr" in json_data else None
 
         # Build print command
-        print_command = '/usr/local/bin/dymoprint "{0}"'.format(text1)        
+        print_command = '/usr/local/bin/dymoprint'      
         if not text1:
             return(json.loads('{ "error": "text1 parameter missing in request" }'), 400)
-        print_command = '{0} {1}'.format(print_command, text1)
+        print_command = '{0} "{1}"'.format(print_command, text1)
         if text2:
             print_command = '{0} "{1}"'.format(print_command, text2)
         if qr:
@@ -51,8 +51,8 @@ class Print(Resource):
         output = sp.getoutput(print_command)
 
         # Return
-        info = '{ "message": "%s}" }' % output
-        return(json.loads(info))
+        info = '{ "message": "%s" }' % output
+        return(json.loads(info, strict=False))
 
 
 class HelloWorld(Resource):
