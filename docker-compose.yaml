@@ -1,0 +1,14 @@
+version: "3.5"
+services:
+  app:
+    build: .
+    #environment:
+    #  SLACK_TOKEN: "xoxb-inventory-bot"
+    #  SLACK_CHANNEL: "#my-channel"
+    #  SLACK_ICON_URL: "https://pbs.twimg.com/profile_images/1297930691880124421/lRLp-GrP.jpg"
+    #  SLACK_USER_NAME: "Inventory Bot"
+    
+    devices:
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
+    ports:
+      - "5000:5000"
