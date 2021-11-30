@@ -1,41 +1,47 @@
 # Dymo webprint
 
-A webservice to print using LabelManager PnP
+A dockerised webservice to print using LabelManager PnP, running on a Linux host. 
 
 ```shell
-curl 127.0.0.1:5000/print/$text1
+curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"text1": "First row", "text2": "Second row", "qr": "https://tiny-url.com"}' \
+  http://localhost:5000/print
 ```
 
-## Installation – manually
-### Windows
-1) Create python3 _venv_ with `virtualenv venv` (install virtualvenv `pip install virtualenv` if missing)
-2) Activate with `venv\Scripts\activate`
-3) Run `pip install -r requirements.txt` to install required modules.
-4) Edit config in `.\app\settings_sample.py` and rename to `.\app\settings.py`.
-5) Start `C:\path-to-venv\Scripts\python.exe` with argument `"C:\path\to\app.py"`
+Supported parameters in json request
+```json
+{
+    "text1": "First row",
+    "text2": "Second row",
+    "text3": "Third row",
+    "text4": "Forth row",
+    "img_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+    "qr": "https://tiny-url.com",
+}
+```
 
-### macOS
-1) Create python3 _venv_ with `virtualenv venv` (run `pip install virtualenv` if virtualenv is needed)
-2) Activate with `source venv\bin\activate`
-3) Run `pip install -r requirements.txt` to install required modules.
-4) Edit config in `./app/settings_sample.py` and rename to `./app/settings.py`.
-5) Create a LaunchAgent in `/Library/LaunchAgents/com.cr3ation.server.plist` and execute `/path/to/app.py`
+## Installation
+dymo-webprint is only supported on a Ubuntu/Debian-host. 
 
-## Note
-Default port is 5000
-
-## Usage Example
-Test if server is up and running
+1) On the host machine, copy modeswitch settings to switch LabelManager PnP from beeing recognized as USB storage device, to be recognized as a printer.
 ```shell
-curl 127.0.0.1:5000/print/$text1
+sudo cp 91-dymo-labelmanager-pnp.rules /etc/udev/rules.d/
+sudo cp dymo-labelmanager-pnp.conf /etc/usb_modeswitch.d/
 ```
+2) Restart services with:
+```shell
+sudo systemctl restart udev.service
+```
+3) Finally, physically disconnect and reconnect the LabelManager PnP [(more info)](http://www.draisberghof.de/usb_modeswitch/bb/viewtopic.php?t=947).
+4) Continue to "Docker" on how to set up a container with webservices for printing.
+
 
 ## Docker
 Install using `docker-compose` or by building the image from scratch. Examples below.
 
 ### Prerequisities
 In order to run within a container you'll need docker installed.
-
 * [Windows](https://docs.docker.com/windows/started)
 * [macOS](https://docs.docker.com/mac/started/)
 * [Linux](https://docs.docker.com/linux/started/)
@@ -57,21 +63,12 @@ docker build -t dymo-webprint:latest .
 sudo docker run -d --privileged -v /dev/bus/usb:/dev/bus/usb -p 5000:5000 dymo-webprint:latest
 ```
 
-```shell
-docker run -d --device=/dev/bus/usb/$(lsusb -d 0922:1002 | awk '{print $2 "/" $4}' | sed 's/://g') -p 5000:5000 dymo-webprint:latest
-```
-
-
-### Environment Variables
-* `SLACK_TOKEN` - Mandatory
-* `SLACK_ICON_URL` - Mandatory
-* `SLACK_USER_NAME` - Mandatory
-
 ### Volumes
 * `/app/` - Entire project including logs
 
 ### Useful File Locations (inside container)
-* `/app/app.py` - Main application
+* `/app/app.py` - Main webservice
+* `/dymoprint/` - Tool for managing printing
 
 ## Contributing
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on code of conduct, and the process for submitting pull requests.
