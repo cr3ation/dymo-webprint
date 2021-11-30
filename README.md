@@ -1,6 +1,5 @@
 # Dymo webprint
 
-Only Linux (Debian/Ubuntu) is supported.
 A web service running in docker used for printing with Dymo LabelManager PnP. 
 
 Print using POST request:
@@ -24,7 +23,7 @@ Supported parameters
 ```
 
 ## Installation
-dymo-webprint is only supported on a Ubuntu/Debian-host. 
+A Ubuntu/Debian host machine running docker is needed for dymo-webprint to work. 
 
 1) On the host machine, copy modeswitch settings to switch LabelManager PnP from beeing recognized as USB storage device, to be recognized as a printer.
 ```shell
