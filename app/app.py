@@ -28,6 +28,8 @@ class Print(Resource):
         # Get parameters from request
         text1 = json_data["text1"] if "text1" in json_data else None
         text2 = json_data["text2"] if "text2" in json_data else None
+        text3 = json_data["text2"] if "text3" in json_data else None
+        text4 = json_data["text2"] if "text4" in json_data else None
         img_url = json_data["img_url"] if "img_url" in json_data else None
         qr = json_data["qr"] if "qr" in json_data else None
 
@@ -38,6 +40,10 @@ class Print(Resource):
         print_command = '{0} "{1}"'.format(print_command, text1)
         if text2:
             print_command = '{0} "{1}"'.format(print_command, text2)
+        if text3:
+            print_command = '{0} "{1}"'.format(print_command, text3)
+        if text4:
+            print_command = '{0} "{1}"'.format(print_command, text4)
         if qr:
             print_command = '{0} --qr "{1}"'.format(print_command, qr)
         if img_url:
