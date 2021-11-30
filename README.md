@@ -1,7 +1,9 @@
 # Dymo webprint
 
-A dockerised webservice to print using LabelManager PnP, running on a Linux host. 
+Only Linux (Debian/Ubuntu) is supported.
+A web service running in docker used for printing with Dymo LabelManager PnP. 
 
+Print using POST request:
 ```shell
 curl --header "Content-Type: application/json" \
   --request POST \
@@ -9,7 +11,7 @@ curl --header "Content-Type: application/json" \
   http://localhost:5000/print
 ```
 
-Supported parameters in json request
+Supported parameters
 ```json
 {
     "text1": "First row",
@@ -34,7 +36,7 @@ sudo cp dymo-labelmanager-pnp.conf /etc/usb_modeswitch.d/
 sudo systemctl restart udev.service
 ```
 3) Finally, physically disconnect and reconnect the LabelManager PnP [(more info)](http://www.draisberghof.de/usb_modeswitch/bb/viewtopic.php?t=947).
-4) Continue to "Docker" on how to set up a container with webservices for printing.
+4) Continue to "Docker" for setting up the web service.
 
 
 ## Docker
