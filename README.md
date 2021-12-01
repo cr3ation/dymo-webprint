@@ -1,6 +1,6 @@
 # Dymo webprint
 
-A web service running in docker used for printing with Dymo LabelManager PnP. 
+A web service running in docker used for printing with Dymo LabelManager PnP.
 
 Print using POST request:
 ```shell
@@ -10,7 +10,7 @@ curl --header "Content-Type: application/json" \
   http://localhost:5000/print
 ```
 
-Supported parameters
+Supported parameters. All `text1` is mandatory, rest is optional.
 ```json
 {
     "text1": "First row",
@@ -23,7 +23,7 @@ Supported parameters
 ```
 
 ## Installation
-A Ubuntu/Debian host machine running docker is needed for dymo-webprint to work. 
+A Ubuntu/Debian host machine running docker is needed for dymo-webprint to work.
 
 1) On the host machine, copy modeswitch settings to switch LabelManager PnP from beeing recognized as USB storage device, to be recognized as a printer.
 ```shell
