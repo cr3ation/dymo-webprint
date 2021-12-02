@@ -35,6 +35,8 @@ class Print(Resource):
 
         # Build print command
         print_command = '/usr/local/bin/dymoprint'      
+        if qr:
+            print_command = '{0} -qr "{1}"'.format(print_command, qr)
         if not text1:
             return(json.loads('{ "error": "text1 parameter missing in request" }'), 400)
         print_command = '{0} "{1}"'.format(print_command, text1)
@@ -44,8 +46,6 @@ class Print(Resource):
             print_command = '{0} "{1}"'.format(print_command, text3)
         if text4:
             print_command = '{0} "{1}"'.format(print_command, text4)
-        if qr:
-            print_command = '{0} -qr "{1}"'.format(print_command, qr)
         if img_url:
             img_path = os.path.dirname(os.path.abspath(__file__)) + "/img.jpg"
             if os.path.exists(img_path):
