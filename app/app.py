@@ -45,7 +45,7 @@ class Print(Resource):
         if text4:
             print_command = '{0} "{1}"'.format(print_command, text4)
         if qr:
-            print_command = '{0} --qr "{1}"'.format(print_command, qr)
+            print_command = '{0} -qr "{1}"'.format(print_command, qr)
         if img_url:
             img_path = os.path.dirname(os.path.abspath(__file__)) + "/img.jpg"
             if os.path.exists(img_path):
