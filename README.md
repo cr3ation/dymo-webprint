@@ -47,7 +47,7 @@ sudo systemctl restart udev.service
 
 
 ## Docker
-Install using `docker-compose` or by building the image from scratch. Examples below.
+Install using `docker compose` or by building the image from scratch. Examples below.
 
 ### Prerequisities
 In order to run within a container you'll need docker installed.
@@ -58,7 +58,7 @@ In order to run within a container you'll need docker installed.
 ### Install using docker-compose
 Edit `docker-compose.yaml`. Add `DEVICE`. Then run
 ```shell
-docker-compose up
+docker compose up
 ```
 
 ### Install using docker
