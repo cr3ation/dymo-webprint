@@ -25,8 +25,16 @@ Supported parameters. `text1` is mandatory, rest is optional.
 ## Installation
 A Ubuntu/Debian host machine running docker is needed for dymo-webprint to work.
 
-1) On the host machine, copy modeswitch settings to switch LabelManager PnP from beeing recognized as USB storage device, to be recognized as a printer.
+1) On the host machine, download repository and copy modeswitch settings to switch LabelManager PnP from beeing recognized as USB storage device, to be recognized as a printer.
 ```shell
+# Download and unzip
+curl -L -o dymo-webprint.zip https://github.com/cr3ation/dymo-webprint/archive/refs/heads/master.zip
+unzip dymo-webprint.zip
+
+# Move to folder
+cd dymo-webprint-main
+
+# Copy settings
 sudo cp 91-dymo-labelmanager-pnp.rules /etc/udev/rules.d/
 sudo cp dymo-labelmanager-pnp.conf /etc/usb_modeswitch.d/
 ```
