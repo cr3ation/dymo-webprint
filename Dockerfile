@@ -1,6 +1,5 @@
 FROM python:3.12
 
-# install dymoprint
 WORKDIR /
 
 # Install labelle CLI without dependencies and then install dependencies needed for the CLI
@@ -13,9 +12,8 @@ RUN apt-get update && \
     apt-get upgrade && \
     apt-get install -y libusb-1.0-0-dev
 
-# Install Flask-app
+# Flask-app
 WORKDIR /app
-
 # Copy files needed by docker
 COPY ["./app/app.py", "docker-entrypoint.sh", "./app/requirements.txt", "docker-entrypoint.sh", "./"]
 RUN pip3 install --no-cache-dir -r requirements.txt
