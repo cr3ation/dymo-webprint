@@ -1,6 +1,6 @@
 # Dymo webprint
 
-A web service running in docker used for printing with Dymo LabelManager PnP. Using Flask and [labelle](https://github.com/labelle-org/labelle).
+A web service running in docker used for printing with Dymo LabelManager PnP. Based on Flask and [labelle](https://github.com/labelle-org/labelle).
 
 Print using POST request:
 ```shell
