@@ -10,7 +10,7 @@ curl --header "Content-Type: application/json" \
   http://localhost:5001/print
 ```
 
-Supported parameters. `text1` is mandatory, rest is optional.
+Supported parameters. One of either `text1`, `qr` or `img_url` is mandatory, rest is optional.
 ```json
 {
     "text1": "First row",
