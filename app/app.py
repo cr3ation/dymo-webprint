@@ -23,8 +23,10 @@ class Print(Resource):
         img_url = json_data.get("img_url")
         qr = json_data.get("qr")
 
-        if not text1:
-            return {"error": "text1 parameter missing in request"}, 400
+        # Check if at least one of text1, qr, or img_url is present
+        if not any([text1, qr, img_url]):
+            return {"error": "Required at least one of the arguments text1, qr, or img_url in request"}, 400
+
 
         # Prepare the command for the label printing subprocess
         print_command = ["labelle"]
