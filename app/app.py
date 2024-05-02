@@ -41,7 +41,6 @@ class Print(Resource):
             print_command += f' "{text4}"'
 
         # Print using safe subprocess call
-        print(f"Command to execute: {print_command}")
         output = subprocess.getoutput(print_command)
 
         # Return
