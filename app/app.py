@@ -1,74 +1,58 @@
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
-import json
 import os
-import subprocess as sp
+import subprocess
 import urllib.request
 
 # Create webapp
 app = Flask(__name__)
 api = Api(app)
 
-# Limitations per host per day / hour
-limiter = Limiter(
-    app,
-    key_func=get_remote_address,
-    default_limits=["500 per day", "120 per hour"])
-
-
-class Print(Resource):        
+class Print(Resource):
     def post(self):
         json_data = request.get_json()
         if not json_data:
-            # Nothing to return
-            return(json.loads('{ "error": "no data in request" }'), 400)
+            return {"error": "no data in request"}, 400
 
-        # Get parameters from request
-        text1 = json_data["text1"] if "text1" in json_data else None
-        text2 = json_data["text2"] if "text2" in json_data else None
-        text3 = json_data["text2"] if "text3" in json_data else None
-        text4 = json_data["text2"] if "text4" in json_data else None
-        img_url = json_data["img_url"] if "img_url" in json_data else None
-        qr = json_data["qr"] if "qr" in json_data else None
+        text1 = json_data.get("text1")
+        text2 = json_data.get("text2")
+        text3 = json_data.get("text3")
+        text4 = json_data.get("text4")
+        img_url = json_data.get("img_url")
+        qr = json_data.get("qr")
 
-        # Build print command
-        print_command = '/usr/local/bin/dymoprint'      
-        if qr:
-            print_command = '{0} -qr "{1}"'.format(print_command, qr)
-        if not text1:
-            return(json.loads('{ "error": "text1 parameter missing in request" }'), 400)
-        print_command = '{0} "{1}"'.format(print_command, text1)
-        if text2:
-            print_command = '{0} "{1}"'.format(print_command, text2)
-        if text3:
-            print_command = '{0} "{1}"'.format(print_command, text3)
-        if text4:
-            print_command = '{0} "{1}"'.format(print_command, text4)
+        print_command = "labelle"
         if img_url:
-            img_path = os.path.dirname(os.path.abspath(__file__)) + "/img.jpg"
+            img_path = os.path.join(app.root_path, "img.jpg")
             if os.path.exists(img_path):
                 os.remove(img_path)
             urllib.request.urlretrieve(img_url, img_path)
-            print_command = '{0} --picture "{1}"'.format(print_command, img_path)
- 
-        # Print
-        output = sp.getoutput(print_command)
+            print_command += f' --picture "{img_path}"'
+        if qr:
+            print_command += f' --qr "{qr}"'
+        if not text1:
+            return {"error": "text1 parameter missing in request"}, 400
+        print_command += f' "{text1}"'
+        if text2:
+            print_command += f' "{text2}"'
+        if text3:
+            print_command += f' "{text3}"'
+        if text4:
+            print_command += f' "{text4}"'
+
+        # Print using safe subprocess call
+        print(f"Command to execute: {print_command}")
+        output = subprocess.getoutput(print_command)
 
         # Return
-        info = '{ "message": "%s" }' % output
-        return(json.loads(info, strict=False))
-
+        return {"message": output}
 
 class HelloWorld(Resource):
     def get(self):
-        return("Hello, World!")
-
+        return "Hello, World!"
 
 api.add_resource(HelloWorld, "/hello")
 api.add_resource(Print, "/print")
-#api.add_resource(Print, "/print/<string:text1>")
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=False)
+    app.run(host='0.0.0.0', port=5001, debug=True)

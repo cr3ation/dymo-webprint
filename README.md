@@ -7,7 +7,7 @@ Print using POST request:
 curl --header "Content-Type: application/json" \
   --request POST \
   --data '{"text1": "First row", "text2": "Second row", "qr": "https://tiny-url.com"}' \
-  http://localhost:5000/print
+  http://localhost:5001/print
 ```
 
 Supported parameters. `text1` is mandatory, rest is optional.
@@ -18,25 +18,24 @@ Supported parameters. `text1` is mandatory, rest is optional.
     "text3": "Third row",
     "text4": "Forth row",
     "img_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
-    "qr": "https://tiny-url.com",
+    "qr": "https://tiny-url.com"
 }
 ```
 
 ## Installation
 A Ubuntu/Debian host machine running docker is needed for dymo-webprint to work.
 
-1) On the host machine, download repository and copy modeswitch settings to switch LabelManager PnP from beeing recognized as USB storage device, to be recognized as a printer.
+1) On the host machine, download repository and update modeswitch settings to switch LabelManager PnP from beeing recognized as USB storage device, to be recognized as a printer.
 ```shell
-# Download and unzip
-curl -L -o dymo-webprint.zip https://github.com/cr3ation/dymo-webprint/archive/refs/heads/master.zip
-unzip dymo-webprint.zip
+# Clone GitHub repo
+git clone https://github.com/cr3ation/dymo-webprint.git
 
 # Move to folder
-cd dymo-webprint-main
+cd dymo-webprint
 
-# Copy settings
-sudo cp 91-dymo-labelmanager-pnp.rules /etc/udev/rules.d/
-sudo cp dymo-labelmanager-pnp.conf /etc/usb_modeswitch.d/
+# Modeswitch settings to switch LabelManager PnP from beeing recognized as USB storage device, to be recognized as a printer.
+echo 'ACTION=="add", SUBSYSTEMS=="usb", ATTRS{idVendor}=="0922", ATTRS{idProduct}=="1001", MODE="0666"' | sudo tee /etc/udev/rules.d/91-labelle-1001.rules
+
 ```
 2) Restart services with:
 ```shell
@@ -56,7 +55,7 @@ In order to run within a container you'll need docker installed.
 * [Linux](https://docs.docker.com/linux/started/)
 
 ### Install using docker-compose
-Edit `docker-compose.yaml`. Add `DEVICE`. Then run
+Edit `docker-compose.yaml`. Then run
 ```shell
 docker-compose up
 ```
@@ -69,7 +68,7 @@ docker build -t dymo-webprint:latest .
 
 #### Run container
 ```shell
-sudo docker run -d --privileged -v /dev/bus/usb:/dev/bus/usb -p 5000:5000 dymo-webprint:latest
+sudo docker run -d --privileged -v /dev/bus/usb:/dev/bus/usb -p 5001:5001 dymo-webprint:latest
 ```
 
 ### Volumes
@@ -77,7 +76,7 @@ sudo docker run -d --privileged -v /dev/bus/usb:/dev/bus/usb -p 5000:5000 dymo-w
 
 ### Useful File Locations (inside container)
 * `/app/app.py` - Main webservice
-* `/dymoprint/` - Tool for managing printing
+* `labelle` - Tool for managing printing
 
 ## Contributing
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on code of conduct, and the process for submitting pull requests.
