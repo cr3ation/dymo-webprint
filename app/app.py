@@ -25,7 +25,7 @@ class Print(Resource):
 
         # Check if at least one of text1, qr, or img_url is present
         if not any([text1, qr, img_url]):
-            return {"error": "Required at least one of the arguments text1, qr, or img_url in request"}, 400
+            return {"error": "Require at least one of the arguments text1, qr, or img_url"}, 400
 
 
         # Prepare the command for the label printing subprocess
