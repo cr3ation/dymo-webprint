@@ -42,37 +42,28 @@ echo 'ACTION=="add", SUBSYSTEMS=="usb", ATTRS{idVendor}=="0922", ATTRS{idProduct
 sudo systemctl restart udev.service
 ```
 3) Finally, physically disconnect and reconnect the LabelManager PnP [(more info)](http://www.draisberghof.de/usb_modeswitch/bb/viewtopic.php?t=947).
-4) Continue to "Docker" for setting up the web service.
-
-
-## Docker
-Install using `docker compose` or by building the image from scratch. Examples below.
-
-### Prerequisities
-In order to run within a container you'll need docker installed.
-* [Windows](https://docs.docker.com/windows/started)
-* [macOS](https://docs.docker.com/mac/started/)
-* [Linux](https://docs.docker.com/linux/started/)
-
-### Install using docker-compose
-Edit `docker-compose.yaml`. Then run
+4) Build and run image
 ```shell
 docker compose up
 ```
 
-### Install using docker
-#### Build image
+
+## Docker
+It's recommended to use `docker compose up` (see installation section above). If you manually want to build and run the container, below are the required steps.
+
+### Prerequisities
+In order to build and run you'll need docker installed.
+* [Install docker](https://docs.docker.com/engine/install/)
+
+### Build and run  
+1) Build image:
 ```shell
 docker build -t dymo-webprint:latest .
 ```
-
-#### Run container
+2) Run container:
 ```shell
 sudo docker run -d --privileged -v /dev/bus/usb:/dev/bus/usb -p 5001:5001 dymo-webprint:latest
 ```
-
-### Volumes
-* `/app/` - Entire project including logs
 
 ### Useful File Locations (inside container)
 * `/app/app.py` - Main webservice
@@ -80,6 +71,7 @@ sudo docker run -d --privileged -v /dev/bus/usb:/dev/bus/usb -p 5001:5001 dymo-w
 
 ## Contributing
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on code of conduct, and the process for submitting pull requests.
+Special thanks to the [labelle](https://github.com/labelle-org/labelle) team.
 
 ## Authors
 * **Henrik Engström** - *Initial work* - [cr3ation](https://github.com/cr3ation)
