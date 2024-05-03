@@ -32,12 +32,6 @@ git clone https://github.com/cr3ation/dymo-webprint.git
 
 # Move to folder
 cd dymo-webprint
-
-# Modeswitch settings to switch LabelManager PnP from beeing recognized as USB storage device, to be recognized as a printer.
-echo 'ACTION=="add", SUBSYSTEMS=="usb", ATTRS{idVendor}=="0922", ATTRS{idProduct}=="1001", MODE="0666"' | sudo tee /etc/udev/rules.d/91-labelle-1001.rules
-
-# Restart services
-sudo systemctl restart udev.service
 ```
 2) Physically disconnect and reconnect the LabelManager PnP [(more info)](http://www.draisberghof.de/usb_modeswitch/bb/viewtopic.php?t=947).
 3) Finally, build and run image
